@@ -1,0 +1,156 @@
+{% extends 'Admin-Base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-12">
+            <div class="content-header">
+                <h2 class="content-title">Add New Product</h2>
+                <div>
+                    <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                    <button class="btn btn-md rounded font-sm hover-up disabled" id="add-product">Add Product</button>
+                </div>
+            </div>
+        </div>
+        <div class="alert" id="alert-success" style="display:none">
+            <div class="alert alert-success" id="success"></div>
+        </div>
+        <div class="alert" id="alert-danger" style="display:none">
+            <div class="alert alert-danger" id="danger"></div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Basic</h4>
+                </div>
+                <div class="card-body">
+                    <form id="add_product">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Product Name</label>
+                            <input type="text" placeholder="Product Name" class="form-control" id="product_name" name="product_name"/>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Product Description</label>
+                            <textarea placeholder="Product Description" class="form-control" id="product_description" name="product_description" rows="4"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Product Ingredients</label>
+                            <textarea placeholder="Product Ingredients" class="form-control" id="product_ingredients" name="product_ingredients" rows="4"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Regular price</label>
+                                    <div class="row gx-2">
+                                        <input placeholder="₹" type="number" id="product_price" name="product_price" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Product Price</label>
+                                    <input placeholder="₹" type="number" id="product_old_price" name="product_old_price" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label">Product Quantity</label>
+                                <input placeholder="Product Quantity" type="number" id="product_quantity" name="product_quantity" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="product_tags" class="form-label">Product Tags</label>
+                            <input type="text" placeholder="Product Tags" class="form-control" id="product_tags" name="product_tags"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- card end// -->
+            <!-- <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Shipping</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Width</label>
+                                    <input type="text" placeholder="inch" class="form-control" id="product_name" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Height</label>
+                                    <input type="text" placeholder="inch" class="form-control" id="product_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Weight</label>
+                            <input type="text" placeholder="gam" class="form-control" id="product_name" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Shipping fees</label>
+                            <input type="text" placeholder="$" class="form-control" id="product_name" />
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+            <!-- card end// -->
+        </div>
+        <div class="col-lg-3" id="my_div">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mt-1">Media</h4>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-md rounded font-sm hover-up" id="add-file-btn">Add img</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <img src="{% static 'Admin/assets/imgs/theme/upload.svg' %}" alt="" />
+                        <input class="form-control" type="file" id="product_img" name="product_img"/>
+                        <div id="file-input-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header text-center">
+                    <h4 class="mt-1">Category</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <select class="form-select" id="sub_category_id" name="sub_category_id">
+                            <option disabled selected>Select Category</option>
+                            {% for c in sub_category %}
+                                <option value="{{c.subcategory_id}}">{{c.subcategory_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% comment %} Check category name is empty or not {% endcomment %}
+<script>
+    document.getElementById('product_name').onkeyup = function() {
+    if (this.value.length > 0) {
+        document.getElementById('add-product').classList.remove('disabled');
+    } else {
+        document.getElementById('add-product').classList.add('disabled');
+    }
+};
+</script>
+<script src="{% static 'Admin/assets/js/events/custome-js.js' %}" type="text/javascript"></script>
+{% endblock %}

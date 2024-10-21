@@ -1,0 +1,76 @@
+{% extends 'Vendor-Base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-12">
+            <div class="content-header">
+                <h2 class="content-title">Edit Sub Category</h2>
+                <div>
+                    <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                    <button class="btn btn-md rounded font-sm hover-up" id="edit-subcategory">Edit Sub Category</button>
+                </div>
+            </div>
+        </div>
+        <div class="alert" id="alert-success" style="display:none">
+            <div class="alert alert-success" id="success"></div>
+        </div>
+        <div class="alert" id="alert-danger" style="display:none">
+            <div class="alert alert-danger" id="danger"></div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Basic</h4>
+                </div>
+                <div class="card-body">
+                    <form id="edit_subcategory">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="subcategory_id" class="form-label">Sub Category Id</label>
+                            <input type="text" value="{{sub_category.subcategory_id}}" placeholder="Sub Category Id" class="form-control" id="subcategory_id" name="subcategory_id" readonly/>
+                        </div>
+                        <div class="mb-4">
+                            <label for="subcategory_name" class="form-label">Sub Category Name</label>
+                            <input type="text" value="{{sub_category.subcategory_name}}" placeholder="Sub Category Name" class="form-control" id="subcategory_name" name="subcategory_name"/>
+                        </div>
+                        <div class="mb-4">
+                            <select class="form-select" id="category_id" name="category_id">
+                                <option disabled selected>Select Category</option>
+                                {% for c in category %}
+                                    <option {% if c.category_id == sub_category.category_id %} selected {% endif %} value="{{c.category_id}}">{{c.category_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3" id="my_div">
+            <div class="card mb-4">
+                <div class="card-header text-center">
+                    <h4 class="mt-1">Media</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <img src="/{{sub_category.subcategory_img}}" alt="" />
+                        <input class="form-control" value="{{sub_category.subcategory_img}}" type="text" id="subcategory_image" name="subcategory_image" hidden/>
+                        <input class="form-control" type="file" id="subcategory_img" name="subcategory_img"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% comment %} Check category name is empty or not {% endcomment %}
+<script>
+    document.getElementById('subcategory_name').onkeyup = function() {
+    if (this.value.length > 0) {
+        document.getElementById('add-subcategory').classList.remove('disabled');
+    } else {
+        document.getElementById('add-subcategory').classList.add('disabled');
+    }
+};
+</script>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends 'Vendor-Base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="row">
+        <div class="col-12">
+            <div class="content-header">
+                <h2 class="content-title">Edit Product</h2>
+                <div>
+                    <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                </div>
+            </div>
+        </div>
+        <div class="alert" id="alert-success" style="display:none">
+            <div class="alert alert-success" id="success"></div>
+        </div>
+        <div class="alert" id="alert-danger" style="display:none">
+            <div class="alert alert-danger" id="danger"></div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Basic</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="edit_product">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="mb-4">
+                                    <label for="product_id" class="form-label">Product Id</label>
+                                    <input type="text" placeholder="Product Id" value="{{ product.product_id }}" class="form-control" id="product_id" name="product_id" disabled/>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Product Name</label>
+                                    <input type="text" placeholder="Product Name" value="{{ product.product_name }}" class="form-control" id="product_name" name="product_name"/>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Product Description</label>
+                                    <textarea placeholder="Product Description" class="form-control" id="product_description" name="product_description" rows="4">{{ product.product_description }}</textarea>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Product Ingredients</label>
+                                    <textarea placeholder="Product Ingredients" class="form-control" id="product_ingredients" name="product_ingredients" rows="4">{{ product.product_ingredients }}</textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Regular price</label>
+                                            <div class="row gx-2">
+                                                <input placeholder="₹" value="{{ product.product_price }}" type="number" id="product_price" name="product_price" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Product Price</label>
+                                            <input placeholder="₹" value="{{ product.product_old_price }}" type="number" id="product_old_price" name="product_old_price" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label">Product Quantity</label>
+                                        <input placeholder="Product Quantity" value="{{ product.product_quantity }}" type="number" id="product_quantity" name="product_quantity" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="product_tags" class="form-label">Product Tags</label>
+                                    <input type="text" placeholder="Product Tags" value="{{ product.tags }}" class="form-control" id="product_tags" name="product_tags"/>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3" id="my_div">
+                                <div class="card mb-4">
+                                    <div class="card-header text-center">
+                                        <h4 class="mt-1">Media</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-upload">
+                                            <img src="/{{product.product_img}}" alt=""/>
+                                            <input class="form-control" value="{{product.product_img}}" type="text" id="product_image" name="product_image" hidden/>
+                                            <input class="form-control" type="file" id="product_img" name="product_img"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-header text-center">
+                                        <h4 class="mt-1">Category</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-upload">
+                                            <select class="form-select" id="sub_category_id" name="sub_category_id">
+                                                <option disabled selected>Select Category</option>
+                                                {% for c in sub_category %}
+                                                    <option {% if c.subcategory_id == product.sub_category_id %} selected {% endif %} value="{{c.subcategory_id}}">{{c.subcategory_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up" name="edit-product">Update Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- card end// -->
+            <!-- <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Shipping</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Width</label>
+                                    <input type="text" placeholder="inch" class="form-control" id="product_name" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Height</label>
+                                    <input type="text" placeholder="inch" class="form-control" id="product_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Weight</label>
+                            <input type="text" placeholder="gam" class="form-control" id="product_name" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Shipping fees</label>
+                            <input type="text" placeholder="$" class="form-control" id="product_name" />
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+            <!-- card end// -->
+        </div>
+        {% comment %} <div class="col-lg-3" id="my_div">
+            <div class="card mb-4">
+                <div class="card-header text-center">
+                    <h4 class="mt-1">Media</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <img src="/{{product.product_img}}" alt="" id="product_image" mane="product_image"/>
+                        <input class="form-control" type="file" id="product_img" name="product_img"/>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header text-center">
+                    <h4 class="mt-1">Category</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-upload">
+                        <select class="form-select" id="sub_category_id" name="sub_category_id">
+                            <option disabled selected>Select Category</option>
+                            {% for c in sub_category %}
+                                <option {% if c.subcategory_id == product.sub_category_id %} selected {% endif %} value="{{c.subcategory_id}}">{{c.subcategory_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div> {% endcomment %}
+    </div>
+</section>
+{% endblock %}

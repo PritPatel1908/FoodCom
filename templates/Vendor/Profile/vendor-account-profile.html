@@ -1,0 +1,236 @@
+{% extends 'Vendor-Base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Profile setting</h2>
+    </div>
+    <div class="alert" id="alert-success" style="display:none">
+        <div class="alert alert-success" id="success"></div>
+    </div>
+    <div class="alert" id="alert-danger" style="display:none">
+        <div class="alert alert-danger" id="danger"></div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row gx-5">
+                <aside class="col-lg-3 border-end">
+                    <nav class="nav nav-pills flex-lg-column mb-4">
+                        <a class="nav-link active" id="profile_detail_btn" aria-current="page">Basic Profile Detail</a>
+                        <a class="nav-link" id="vendor_detail_btn">Vendor Account Detail</a>
+                    </nav>
+                </aside>
+                <div class="col-lg-9">
+                    {% comment %} Basic profile detail {% endcomment %}
+                    <section class="content-body p-xl-4" id="basic_profile_detail">
+                        <form id="basic_profile_detail_form" method="POST", enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row" id="">
+                                <div class="col-lg-8">
+                                    <div class="row gx-3">
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label">First name</label>
+                                            <input class="form-control" type="text" id="first_name" name="first_name" value="{{vendor.user.first_name}}" placeholder="Enter First Name" />
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label">Last name</label>
+                                            <input class="form-control" type="text" id="last_name" name="last_name" value="{{vendor.user.last_name}}" placeholder="Enter First Name" />
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control" type="email" id="email" name="email" value="{{vendor.user.email}}" placeholder="Enter Your Email" readonly/>
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input class="form-control" type="number" id="phone" name="phone" value="{{vendor.user.phone}}" placeholder="Enter your phone number" />
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-12 mb-3">
+                                            <label class="form-label">No/Street/Line</label>
+                                            <input class="form-control" type="text" id="no_street_line" name="no_street_line" value="{{vendor.user.no_street_line}}" placeholder="Enter Your No Street Line" />
+                                        </div>
+                                        <div class="col-lg-12 mb-3">
+                                            <label class="form-label">Pincode</label>
+                                            <input class="form-control" type="number" id="pincode" name="pincode" value="{{vendor.user.pincode}}" placeholder="Enter Your Area Pincone" />
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Birthday</label>
+                                            <input class="form-control" type="date" id="dob" name="dob" value="{{vendor.user.dob|date:'Y-m-d'}}" />
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Gender</label>
+                                            <select class="form-select" name="gender" id="gender">
+                                                <option disabled selected>Select Genger</option>
+                                                {% if vendor.user.gender == 'Male' %}
+                                                    <option selected value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                {% elif vendor.user.gender == 'Female' %}
+                                                    <option value="Male">Male</option>
+                                                    <option selected value="Female">Female</option>
+                                                {% else %}
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                        <!-- col .// -->
+                                    </div>
+                                    <!-- row.// -->
+                                </div>
+                                <!-- col.// -->
+                                <aside class="col-lg-4">
+                                    <figure class="text-lg-center">
+                                        <img class="img-lg mb-3 img-avatar" src="/{{vendor.user.profile_pic}}" alt="User Photo" />
+                                        <div class="input-upload">
+                                            <input class="form-control" value="/{{vendor.user.profile_pic}}" type="text" id="profile_image" name="profile_image" hidden/>
+                                            <input class="form-control" type="file" id="profile_pic" name="profile_pic"/>
+                                        </div>
+                                    </figure>
+                                </aside>
+                            </div>
+                            <!-- row.// -->
+                            <br />
+                            <button class="btn btn-primary" type="submit">Save changes</button>
+                        </form>
+                        <hr class="my-5" />
+                        <div class="row" style="max-width: 920px">
+                            <div class="col-md">
+                                <article class="box mb-3 bg-light">
+                                    <a class="btn float-end btn-light btn-sm rounded font-md" href="#">Change</a>
+                                    <h6>Password</h6>
+                                    <small class="text-muted d-block" style="width: 70%">You can reset or change your password by clicking here</small>
+                                </article>
+                            </div>
+                            <!-- col.// -->
+                            <div class="col-md">
+                                <article class="box mb-3 bg-light">
+                                    <a class="btn float-end btn-light rounded btn-sm font-md" href="#">Deactivate</a>
+                                    <h6>Remove account</h6>
+                                    <small class="text-muted d-block" style="width: 70%">Once you delete your account, there is no going back.</small>
+                                </article>
+                            </div>
+                            <!-- col.// -->
+                        </div>
+                        <!-- row.// -->
+                    </section>
+                    
+                    {% comment %} Vendor account detail {% endcomment %}
+                    <section class="content-body p-xl-4" style="display:none" id="vendor_account_detail">
+                        <form id="vendor_account_detail_form" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="row gx-3">
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Vendor Name</label>
+                                            <input class="form-control" type="text" id="vendor_name" name="vendor_name" value="{{vendor.vendor_name}}" placeholder="Enter Vendor Name" />
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Vendor Description</label>
+                                            <textarea class="form-control" id="vendor_description" name="vendor_description" rows="4" placeholder="Vendor Description">{{vendor.vendor_description}}</textarea>
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-12 mb-3">
+                                            <label class="form-label">Vendor Address</label>
+                                            <input class="form-control" type="text" id="vendor_address" name="vendor_address" value="{{vendor.vendor_address}}" placeholder="Enter Vendor Address"/>
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Vendor Phone</label>
+                                            <input class="form-control" type="number" id="vendor_phone" name="vendor_phone" value="{{vendor.vendor_phone}}" placeholder="Enter Vendor Phone Number" />
+                                        </div>
+                                        <!-- col .// -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Shipping On Time</label>
+                                            <input class="form-control" type="number" id="shipping_on_time" name="shipping_on_time" value="{{vendor.shipping_on_time}}" placeholder="Enter Shipping On Time" />
+                                        </div>
+                                    </div>
+                                    <!-- row.// -->
+                                </div>
+                                <!-- col.// -->
+                                <aside class="col-lg-4">
+                                    <figure class="text-lg-center">
+                                        <img class="img-lg mb-3 img-avatar" src="/{{vendor.vendor_img}}" alt="Vendor Photo" />
+                                        <div class="input-upload">
+                                            <input class="form-control" value="/{{vendor.vendor_img}}" type="text" id="vendor_image" name="vendor_image" hidden/>
+                                            <input class="form-control" type="file" id="vendor_img" name="vendor_img"/>
+                                        </div>
+                                    </figure>
+                                </aside>
+                            </div>
+                            <!-- row.// -->
+                            <br />
+                            <button class="btn btn-primary" type="submit">Save changes</button>
+                        </form>
+                        <hr class="my-5" />
+                        <div class="row" style="max-width: 920px">
+                            <div class="col-md">
+                                <article class="box mb-3 bg-light">
+                                    <a class="btn float-end btn-light btn-sm rounded font-md" href="#">Change</a>
+                                    <h6>Password</h6>
+                                    <small class="text-muted d-block" style="width: 70%">You can reset or change your password by clicking here</small>
+                                </article>
+                            </div>
+                            <!-- col.// -->
+                            <div class="col-md">
+                                <article class="box mb-3 bg-light">
+                                    <a class="btn float-end btn-light rounded btn-sm font-md" href="#">Deactivate</a>
+                                    <h6>Remove account</h6>
+                                    <small class="text-muted d-block" style="width: 70%">Once you delete your account, there is no going back.</small>
+                                </article>
+                            </div>
+                            <!-- col.// -->
+                        </div>
+                        <!-- row.// -->
+                    </section>
+                    <!-- content-body .// -->
+                </div>
+                <!-- col.// -->
+            </div>
+            <!-- row.// -->
+        </div>
+        <!-- card body end// -->
+    </div>
+    <!-- card end// -->
+</section>
+
+<script>
+    const basicProfileDetail = document.getElementById('basic_profile_detail');
+    const vendorAccountDetail = document.getElementById('vendor_account_detail');
+    const profileDetailBtn = document.getElementById('profile_detail_btn');
+    const vendorDetailBtn = document.getElementById('vendor_detail_btn');
+
+    if (localStorage.getItem('vendorAccountDetailVisible') === 'true') 
+    {
+        basicProfileDetail.style.display = 'none';
+        vendorAccountDetail.style.display = 'block';
+        vendorDetailBtn.classList.add('active');
+        profileDetailBtn.classList.remove('active');
+    }
+      
+    vendorDetailBtn.addEventListener('click', function() {
+        basicProfileDetail.style.display = 'none';
+        vendorAccountDetail.style.display = 'block';
+        vendorDetailBtn.classList.add('active');
+        profileDetailBtn.classList.remove('active');
+      
+        // Store the current state in localStorage
+        localStorage.setItem('vendorAccountDetailVisible', true);
+    });
+
+    profileDetailBtn.addEventListener('click', function() {
+        vendorAccountDetail.style.display = 'none';
+        basicProfileDetail.style.display = 'block';
+        vendorDetailBtn.classList.remove('active');
+        profileDetailBtn.classList.add('active');
+      
+        // Store the current state in localStorage
+        localStorage.setItem('vendorAccountDetailVisible', false);
+    });
+</script>
+{% endblock %}

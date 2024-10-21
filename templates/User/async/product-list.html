@@ -1,0 +1,56 @@
+{% for product in products %}
+    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+        <div class="product-cart-wrap mb-30">
+            <div class="product-img-action-wrap">
+                <div class="product-img product-img-zoom">
+                    <a href="{% url 'product_detail' product.product_id %}">
+                        <img class="default-img" src="{{product.product_img}}" alt="Product Img" />
+                        {% comment %} <img class="hover-img" src="assets/imgs/shop/product-1-2.jpg" alt="" /> {% endcomment %}
+                    </a>
+                </div>
+                <div class="product-action-1">
+                    <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                    {% comment %} <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> {% endcomment %}
+                    <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                </div>
+                <div class="product-badges product-badges-position product-badges-mrg">
+                    <span class="hot">Save {{product.get_save|floatformat:0}} ₹</span>
+                </div>
+            </div>
+            <div class="product-content-wrap">
+                <div class="product-category">
+                    <a href="{% url 'sub_category_products' product.sub_category.subcategory_id %}">{{product.sub_category.subcategory_name}}</a>
+                </div>
+                <h2><a href="{% url 'product_detail' product.product_id %}">{{product.product_name}}</a></h2>
+                <div class="product-rate-cover">
+                    <div class="product-rate d-inline-block">
+                        <div class="product-rating" style="width: 90%"></div>
+                    </div>
+                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                </div>
+                <div>
+                    <span class="font-small text-muted">By <a href="{% url 'vendor_detail' product.vendor_id %}">FoodCom</a></span>
+                </div>
+                <div class="product-card-bottom">
+                    <div class="product-price">
+                        <div class="row">
+                            <div class="col-12">
+                                <span>₹ </span><span class="product-price-{{product.product_id}}">{{product.product_price}}</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="old-price">₹ {{product.product_old_price}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-cart mt-2">
+                        <input type="hidden" id="cart_product_quantity" class="cart_product_quantity-{{product.product_id}}" value="1">
+                        <input type="hidden" value="{{product.product_id}}" class="cart_product_id-{{product.product_id}}">
+                        <input type="hidden" value="{{product.product_name}}" class="cart_product_name-{{product.product_id}}">
+                        <input type="hidden" value="{{product.product_img}}" class="cart_product_img-{{product.product_id}}">
+                        <a class="add add-to-cart-btn" data-index="{{product.product_id}}"><i class="fi-rs-shopping-cart mr-5"></i>Add</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
