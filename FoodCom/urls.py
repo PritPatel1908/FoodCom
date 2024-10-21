@@ -96,6 +96,9 @@ urlpatterns = [
     # Sub Category to Product list
     path('sub_category_product/<str:subcategory_id>', user_views.subcategory_product_list, name='sub_category_products'),
 
+    # Accounts
+    path('account_page', user_views.account_page, name='account_page'),
+
     # Vendor
     # Vendor dashbord
     path('vendor', vendor_views.vendor_dashbord, name="vendor"),

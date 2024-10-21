@@ -117,7 +117,7 @@ def add_review(request, product_id):
         product_review.save()
 
         return JsonResponse({'status': 200, 'message': 'Your review is successfully submited...'})
-    return render(request, 'User/product-detail.html', context)
+    return render(request, 'User/product-detail.html')
 
 # Product Load more review
 def load_more(request, product_id):
@@ -237,3 +237,8 @@ def add_to_cart_product_detail(request):
         request.session['cart_data_obj'] = cart_product
         return JsonResponse({"status" : 200, "data" : request.session['cart_data_obj'], 'total_cart_items' : len(request.session['cart_data_obj'])})
     return JsonResponse({"data" : request.session['cart_data_obj'], 'total_cart_items' : len(request.session['cart_data_obj'])})
+
+# Account
+# Account page
+def account_page(request):
+    return render(request, 'User/account.html')
