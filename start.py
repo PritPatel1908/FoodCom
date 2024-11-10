@@ -4,13 +4,10 @@ import time
 from datetime import datetime
 from pathlib import Path
 from SMWinservice import SMWinservice
+import subprocess
 
-def writeToFile():
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    DIR = os.path.join(BASE_DIR,'log.txt')
-    while True:
-        with open(DIR, 'a+') as file:
-            file.write(str(datetime.now()))
+def startServer():
+    subprocess.run(['python', 'manage.py', 'runserver'])
 
 class PythonFoodComServiceStart(SMWinservice):
     _svc_name_ = "FoodComService"
@@ -24,7 +21,7 @@ class PythonFoodComServiceStart(SMWinservice):
         self.isrunning = False
 
     def main(self):
-        writeToFile()
+        startServer()
 
 if __name__ == '__main__':
     PythonFoodComServiceStart.parse_command_line()
