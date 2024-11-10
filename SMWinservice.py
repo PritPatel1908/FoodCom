@@ -29,6 +29,7 @@ import win32serviceutil
 import servicemanager
 import win32event
 import win32service
+import subprocess
 
 
 class SMWinservice(win32serviceutil.ServiceFramework):
@@ -89,7 +90,7 @@ class SMWinservice(win32serviceutil.ServiceFramework):
         '''
         Main class to be ovverridden to add logic
         '''
-        pass
+        subprocess.run(['python', 'manage.py', 'runserver', '8000'])
 
 # entry point of the module: copy and paste into the new module
 # ensuring you are calling the "parse_command_line" of the new created class

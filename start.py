@@ -7,7 +7,7 @@ from SMWinservice import SMWinservice
 import subprocess
 
 def startServer():
-    subprocess.run(['python', 'manage.py', 'runserver'])
+    subprocess.run(['python', 'manage.py', 'runserver', '8000'])
 
 class PythonFoodComServiceStart(SMWinservice):
     _svc_name_ = "FoodComService"
