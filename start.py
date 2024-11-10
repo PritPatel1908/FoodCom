@@ -4,10 +4,11 @@ import time
 from datetime import datetime
 from pathlib import Path
 from SMWinservice import SMWinservice
-import subprocess
+from waitress import serve
+import FoodCom.wsgi
 
 def startServer():
-    subprocess.run(['python', 'manage.py', 'runserver', '8000'])
+    serve(FoodCom.wsgi.application, host='127.0.0.1', port=8000)
 
 class PythonFoodComServiceStart(SMWinservice):
     _svc_name_ = "FoodComService"
