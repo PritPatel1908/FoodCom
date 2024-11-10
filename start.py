@@ -1,28 +1,33 @@
-from pathlib import Path
+# django_service
+
 import os
-import time
-from datetime import datetime
-from pathlib import Path
-from SMWinservice import SMWinservice
-from waitress import serve
-import FoodCom.wsgi
+import sys
+import win32serviceutil
+import win32service
+import win32event
+from django.core.management import execute_from_command_line
 
-def startServer():
-    serve(FoodCom.wsgi.application, host='127.0.0.1', port=8000)
+class DjangoService(win32serviceutil.ServiceFramework):
+    _svc_name_ = "DjangoService"
+    _svc_display_name_ = "Django FoodCom Service"
+    _svc_description_ = "A Windows service to run Django FoodCom Project server."
 
-class PythonFoodComServiceStart(SMWinservice):
-    _svc_name_ = "FoodComService"
-    _svc_display_name_ = "Python FoodCom Service"
-    _svc_description_ = "This Is A FoodComService RunServer Service"
+    def __init__(self, args):
+        super().__init__(args)
+        self.stop_event = win32event.CreateEvent(None, 0, 0, None)
 
-    def start(self):
-        self.isrunning = True
+    def SvcStop(self):
+        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+        win32event.SetEvent(self.stop_event)
 
-    def stop(self):
-        self.isrunning = False
+    def SvcDoRun(self):
+        # Set the Django settings module
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FoodCom.settings')
 
-    def main(self):
-        startServer()
+        # Run Django's development server on a specified IP and port
+        execute_from_command_line([sys.executable, 'manage.py', 'runserver', '127.0.0.1:8000'])
+
+        win32event.WaitForSingleObject(self.stop_event, win32event.INFINITE)
 
 if __name__ == '__main__':
-    PythonFoodComServiceStart.parse_command_line()
+    win32serviceutil.HandleCommandLine(DjangoService)
