@@ -8,7 +8,7 @@ django-active-link==0.2.2
 hyperlink==21.0.0
 idna==3.10
 msgpack==1.1.0
-mysqlclient==2.2.6
+mysqlclient==2.1.1
 pillow==11.0.0
 psycopg2-binary==2.9.10
 razorpay==1.4.2
