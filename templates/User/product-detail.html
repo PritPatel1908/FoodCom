@@ -89,15 +89,15 @@
                                                 <div class="product-extra-link2">
                                                     <input type="hidden" value="{{product.product_id}}" class="cart_product_id-{{product.product_id}}">
                                                     <input type="hidden" value="{{product.product_name}}" class="cart_product_name-{{product.product_id}}">
-                                                    <input type="hidden" value="/{{product_image.product_images}}" class="cart_product_img-{{product.product_id}}">
+                                                    <input type="hidden" value="/{{product.product_img}}" class="cart_product_img-{{product.product_id}}">
 
                                                     {% if product.product_id in request.session.cart_data_obj %}
                                                         <button type="submit" class="button button-add-to-cart add-to-cart-btn" data-index="{{product.product_id}}" id="add-to-cart-btn"><i class="fi-rs-shopping-cart"></i>Remove</button>
                                                     {% else %}
                                                         <button type="submit" class="button button-add-to-cart add-to-cart-btn" data-index="{{product.product_id}}" id="add-to-cart-btn"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
                                                     {% endif %}
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                    {% comment %} <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> {% endcomment %}
                                                 </div>
                                             </div>
                                             <div class="font-xs">
@@ -578,13 +578,13 @@
                                 </ul>
                                 <h5 class="section-title style-3 mb-20">Return & Warranty</h5>
                                 <ul>
-                                    <li>
+                                    {% comment %} <li>
                                         <i class="fi fi-rs-shield-check mr-10 text-brand"></i>
                                         <span> 100% Vegetarian </span>
-                                    </li>
+                                    </li> {% endcomment %}
                                     <li>
                                         <i class="fi fi-rs-time-forward-ten mr-10 text-brand"></i>
-                                        <span> 1 Hours Return </span>
+                                        <span> 30c min Return </span>
                                     </li>
                                     {% comment %} <li>
                                         <i class="fi fi-rs-diploma mr-10 text-brand"></i>
@@ -647,7 +647,7 @@
                                 </ul>
                             </div>
                             <!-- Fillter By Price -->
-                            <div class="sidebar-widget price_range range mb-30">
+                            {% comment %} <div class="sidebar-widget price_range range mb-30">
                                 <h5 class="section-title style-1 mb-30">Fill by price</h5>
                                 <div class="price-filter">
                                     <div class="price-filter-inner">
@@ -685,9 +685,9 @@
                                     </div>
                                 </div>
                                 <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
-                            </div>
+                            </div> {% endcomment %}
                             <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
+                            {% comment %} <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                                 <h5 class="section-title style-1 mb-30">New products</h5>
                                 <div class="single-post clearfix">
                                     <div class="image">
@@ -725,8 +725,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
                                 <img src="assets/imgs/banner/banner-11.png" alt="" />
                                 <div class="banner-text">
                                     <span>Oganic</span>
@@ -736,7 +736,7 @@
                                         Juice
                                     </h4>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                 </div>

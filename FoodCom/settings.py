@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'paypal.standard',
     # Load My App
     'food_com',
 ]
@@ -88,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'foodcom',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD':'',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -141,14 +142,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = '/static/'
+STATIC_ROOT = '/static/'
 
-STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+# STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
-# STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR,'static')
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -162,5 +163,10 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_HOST_USER='foodcom0750@gmail.com'
-EMAIL_HOST_PASSWORD='bvun miyy xaeg jsbk'
+EMAIL_HOST_PASSWORD='rdai nkfn ksku mivw'
 EMAIL_USE_TLS=True
+
+PAYPAL_RECEIVER_EMAIL = 'foodcom@business.example.com'
+PAYPAL_TEST = True
+
+LOGIN_URL = 'signin_page'

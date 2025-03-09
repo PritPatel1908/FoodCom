@@ -41,7 +41,6 @@ def add_product(request):
         if Product.objects.filter(product_name=product_name).exists():
             return JsonResponse({'message': 'Enter Another Product Name Because This Name Is Already Exist...'})
         else:
-            print(request.user.user_id)
             product = Product(
                 product_name = product_name,
                 product_description = product_description,
@@ -52,7 +51,7 @@ def add_product(request):
                 sub_category_id = sub_category_id,
                 tags = product_tags,
                 product_img = product_img,
-                # vendor_id = request.user.user_id
+                vendor_id = request.user.vendor_id,
             )
             product.save()
 
@@ -129,6 +128,9 @@ def update_product(request, product_id):
         if product_img != product_image:
             if product_img != None:
                 product.product_img = product_img
+
+        if product.vendor_id != request.user.vendor_id:
+            product.vendor_id = request.user.vendor_id
         product.save()
 
         context = {
@@ -283,7 +285,6 @@ def update_subcategory(request, subcategory_id):
         subcategory_image = request.POST.get('subcategory_image')
         subcategory_img = request.FILES.get('subcategory_img')
 
-        print(subcategory_image,subcategory_img)
         sub_category = Sub_Category.objects.get(subcategory_id = subcategory_id)
 
         if sub_category.subcategory_name != subcategory_name:
@@ -360,6 +361,9 @@ def add_vendor(request):
                 vendor_img = vendor_img,
             )
             vendor.save()
+            user = Users.objects.get(user_id = user_id)
+            user.vendor_id = vendor.vendor_id
+            user.save()
 
             return JsonResponse({'status': 200, 'message': 'Your vendor is added...'})
     return redirect(add_manual_vendor_page)
@@ -400,3 +404,134 @@ def vendor_request_reject(request,vendor_account_request_id):
         }
         return JsonResponse({'status': 200, 'message': 'Your request is reject...'})
     return render(request, 'Admin/Vendor/manage-vendor-request.html', context)
+
+# Manage vendor page
+def manage_vendor_page(request):
+    vendor = Vendor_Account_Request.objects.filter(vendor_account_status=1).order_by('date')
+    context = {
+        'vendor_account_requests' : vendor_account_requests
+    }
+    return render(request, 'Admin/Vendor/manage-vendor-request.html', context)
+
+# Manage category
+def manage_vendor(request):
+    vendors = Vendor.objects.all().order_by('date') #this is show ascending order
+    context = {
+        'vendors' : vendors
+    }
+    return render(request, 'Admin/Vendor/manage-vendor.html', context)
+
+# Edit Vendor
+def edit_vendor(request, vendor_id):
+    vendor = Vendor.objects.get(vendor_id = vendor_id)
+    users = Users.objects.all().order_by('date_joined')
+    context = {
+        'vendor' : vendor,
+        'users' : users
+    }
+    return render(request, 'Admin/Vendor/edit-vendor.html', context)
+
+# Update sub category
+def update_vendor(request, vendor_id):
+    if request.method == 'POST':
+        vendor_name = request.POST.get('vendor_name')
+        vendor_description = request.POST.get('vendor_description')
+        vendor_address = request.POST.get('vendor_address')
+        vendor_phone = request.POST.get('vendor_phone')
+        shipping_on_time = request.POST.get('shipping_on_time')
+        vendor_rating = request.POST.get('vendor_rating')
+        user_id = request.POST.get('user_id')
+        vendor_image = request.POST.get('vendor_image')
+        vendor_img = request.FILES.get('vendor_img')
+
+        vendor = Vendor.objects.get(vendor_id = vendor_id)
+        user = Users.objects.get(user_id = user_id)
+        users = Users.objects.all().order_by('date_joined')
+
+        if vendor.vendor_name != vendor_name:
+            vendor.vendor_name = vendor_name
+
+        if vendor.vendor_description != vendor_description:
+            vendor.vendor_description = vendor_description
+
+        if vendor.vendor_address != vendor_address:
+            vendor.vendor_address = vendor_address
+
+        if vendor.vendor_phone != vendor_phone:
+            vendor.vendor_phone = vendor_phone
+
+        if vendor.shipping_on_time != shipping_on_time:
+            vendor.shipping_on_time = shipping_on_time
+
+        if vendor.vendor_rating != vendor_rating:
+            vendor.vendor_rating = vendor_rating
+
+        if vendor.user_id != user_id:
+            vendor.user_id = user_i
+            
+        if vendor_img != vendor_image:
+            if vendor_img != None:
+                vendor.vendor_img = vendor_img
+        vendor.save()
+        user.vendor_id = vendor.vendor_id
+        user.save()
+
+        context = {
+            'vendor' : vendor,
+            'users' : users
+        }
+
+        return JsonResponse({'status': 200, 'message': 'Your vendor is updated...'})
+    return render(request, 'Admin/Vendor/edit-vendor.html', context)
+
+# Delete sub category
+def delete_vendor(request, vendor_id):
+    if request.method == 'POST':
+        vendors = Vendor.objects.all().order_by('date') #this is show ascending order
+        context = {
+            'vendors' : vendors
+        }
+
+        vendor = Vendor.objects.get(vendor_id=vendor_id)
+        vendor.delete()
+        return JsonResponse({'status': 200, 'message': 'Your vendor is deleted...'})
+    return render(request, 'Admin/Vendor/manage-vendor.html', context)
+
+# Order
+# Manage order
+def manage_order(request):
+    orders = Order.objects.all().order_by('order_date') #this is show ascending order
+    context = {
+        'orders' : orders
+    }
+    return render(request, 'Admin/Order/manage-order.html', context)
+
+def get_order_details(request, order_id):
+    order = Order.objects.get(id=order_id)
+    order_details = OrderDetails.objects.filter(order=order).values(
+        "invoice_no", "product_status", "item", "item_id", "qty", "price", "total"
+    )
+
+    data = {
+        "order_id": order.id,
+        "user": order.user.username,
+        "email": order.user.email,
+        "price": order.price,
+        "status": order.product_status,
+        "date": order.order_date,
+        "details": list(order_details),
+    }
+
+    return JsonResponse(data)
+
+def update_order_status(request, order_id):
+    if request.method == "POST":
+        try:
+            order = Order.objects.get(id=order_id)
+            new_status = request.POST.get("order_status")
+            order.product_status = new_status
+            order.save()
+            return JsonResponse({"message": "Order status updated successfully!"}, status=200)
+        except Order.DoesNotExist:
+            return JsonResponse({"error": "Order not found"}, status=404)
+    return JsonResponse({"error": "Invalid request"}, status=400)

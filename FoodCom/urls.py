@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from food_com import views, admin_views, user_views, vendor_views
@@ -55,11 +55,21 @@ urlpatterns = [
     path('admin/add_vendor', admin_views.add_vendor, name="add_vendor"),
     path('admin/vendor_request_approve/<str:vendor_account_request_id>', admin_views.vendor_request_approve, name="vendor_request_approve"),
     path('admin/vendor_request_reject/<str:vendor_account_request_id>', admin_views.vendor_request_reject, name="vendor_request_reject"),
+    path('admin/manage_vendor', admin_views.manage_vendor, name="manage_vendor"),
+    path('admin/edit_vendor/<str:vendor_id>', admin_views.edit_vendor, name="edit_vendor"),
+    path('admin/edit_vendor/<str:vendor_id>/update_vendor', admin_views.update_vendor, name="update_vendor"),
+    path('admin/delete_vendor/<str:vendor_id>', admin_views.delete_vendor, name="delete_vendor"),
+
+    # Order
+    path('admin/manage_order', admin_views.manage_order, name="manage_order"),
+    path('order-details/<int:order_id>/', admin_views.get_order_details, name='order-details'),
+    path("update-order-status/<int:order_id>/", admin_views.update_order_status, name="update_order_status"),
 
     # User
     # Home Page Url (User / Visitor)
     path('', views.index, name='index'),
     path('index', views.index, name='index'),
+    path("update-user-details/", user_views.update_user_details, name="update_user_details"),
 
     # Search
     path('search/', user_views.search_view, name='search'),
@@ -84,8 +94,25 @@ urlpatterns = [
     path('products', user_views.product_list, name='products'),
     path('product_detail/<str:product_id>', user_views.product_detail, name='product_detail'),
     path('tags_product_list/<str:tag>', user_views.tags_product_list, name='tags_product_list'),
+    
+    # Cart
     # Add / Remove cart product to all page
     path('add-to-cart-product-detail', user_views.add_to_cart_product_detail, name='add-to-cart-product-detail'),
+    path('cart_page', user_views.cart_page, name='cart_page'),
+    path('delete_to_cart', user_views.delete_to_cart, name='delete_to_cart'),
+    path('update_to_cart', user_views.update_to_cart, name='update_to_cart'),
+    path('checkout', user_views.checkout_view, name='checkout'),
+
+    # Payment
+    # Paypal / payment complete / failed
+    path('cod_order', user_views.cod_order, name='cod_order'),
+    path('paypal-ipn/', include('paypal.standard.ipn.urls')),
+    path('payment_completed/', user_views.payment_completed_view, name='payment_completed'),
+    path('payment_failed/', user_views.payment_failed_view, name='payment_failed'),
+
+    # Order Details
+    path('order_details/<str:id>', user_views.order_details, name='order_details'),
+    path('order-tracking/<int:order_id>/', user_views.order_tracking, name='order_tracking'),
 
     # All category list
     path('category', user_views.category_list, name='categories'),
@@ -138,6 +165,11 @@ urlpatterns = [
     path('vendor/edit_subcategory/<str:subcategory_id>', vendor_views.edit_subcategory, name="vendor_edit_subcategory"),
     path('vendor/edit_subcategory/<str:subcategory_id>/update_subcategory', vendor_views.update_subcategory, name="vendor_update_subcategory"),
     path('vendor/delete_subcategory/<str:subcategory_id>', vendor_views.delete_subcategory, name="vendor_delete_subcategory"),
+
+    # Order
+    path('vendor/manage_order', vendor_views.manage_order, name="manage_order"),
+    path('order-details/<int:order_id>/', vendor_views.get_order_details, name='order-details'),
+    path("update-order-status/<int:order_id>/", vendor_views.update_order_status, name="update_order_status"),
 
     # For all account
     # Login Existing Account (Sign-In)

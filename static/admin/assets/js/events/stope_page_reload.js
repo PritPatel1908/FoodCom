@@ -614,3 +614,110 @@ $(document).on('click', '#vendor_request_reject', function(e){
       }
   });
 });
+
+// Disable page reload in update vendor
+$(document).on('click', '#edit-vendor', function(e){
+  e.preventDefault();
+
+  var vandor_id = $('#vandor_id').val();
+  var vendor_name = $('#vendor_name').val();
+  var vendor_description = $('#vendor_description').val();
+  var vendor_address = $('#vendor_address').val();
+  var vendor_phone = $('#vendor_phone').val();
+  var shipping_on_time = $('#shipping_on_time').val();
+  var vendor_rating = $('#vendor_rating').val();
+  var user_id = $('#user_id').val();
+  var vendor_image = $('#vendor_image').val();
+  
+  var form_data = new FormData();
+
+  form_data.append('vandor_id', vandor_id);
+  form_data.append('vendor_name', vendor_name);
+  form_data.append('vendor_description', vendor_description);
+  form_data.append('vendor_address', vendor_address);
+  form_data.append('vendor_phone', vendor_phone);
+  form_data.append('shipping_on_time', shipping_on_time);
+  form_data.append('vendor_rating', vendor_rating);
+  form_data.append('user_id', user_id);
+  form_data.append('vendor_image', vendor_image);
+  form_data.append('vendor_img', $('#vendor_img')[0].files[0]);
+    
+  var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+  $.ajax({
+      url: vandor_id + "/update_vendor",
+      type: "POST",
+      mimeType: "multipart/form-data",
+      contentType: false,
+      processData: false,
+      data: form_data,
+      headers: {'X-CSRFToken': csrfToken},
+      dataType: "json",
+      success: function(response)
+      {
+        $(window).scrollTop(0);
+        $("#edit_vendor_form").load(location.href + " #edit_vendor_form>*", "");
+        $("#my_div").load(location.href + " #my_div>*", "");
+        if(response.status == 200)
+        {
+          document.getElementById("alert-success").style.display = 'block';
+          document.getElementById("success").innerText = response.message;
+          setInterval(function ()
+          {      
+            document.getElementById("alert-success").style.display = 'none';
+          }, 5000);
+        }
+        else
+        {
+          document.getElementById("alert-danger").style.display = 'block';
+          document.getElementById("danger").innerText = response.message;
+          setInterval(function ()
+          {      
+            document.getElementById("alert-danger").style.display = 'none';
+          }, 5000);
+        }
+      }
+  });
+});
+
+// Disable page reload in delete category
+$(document).on('click', '#delete-vendor', function(e){
+  e.preventDefault();
+
+  var vendor_id = $(this).data('item-id');
+
+  var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+  $.ajax({
+      url: "delete_vendor/" + vendor_id,
+      type: "POST",
+      mimeType: "multipart/form-data",
+      contentType: false,
+      processData: false,
+      headers: {'X-CSRFToken': csrfToken},
+      dataType: "json",
+      success: function(response)
+      {
+        $(window).scrollTop(0);
+        $("#vendor_list").load(location.href + " #vendor_list>*", "");
+        if(response.status == 200)
+        {
+          document.getElementById("alert-success").style.display = 'block';
+          document.getElementById("success").innerText = response.message;
+          setInterval(function ()
+          {      
+            document.getElementById("alert-success").style.display = 'none';
+          }, 5000);
+        }
+        else
+        {
+          document.getElementById("alert-danger").style.display = 'block';
+          document.getElementById("danger").innerText = response.message;
+          setInterval(function ()
+          {      
+            document.getElementById("alert-danger").style.display = 'none';
+          }, 5000);
+        }
+      }
+  });
+});

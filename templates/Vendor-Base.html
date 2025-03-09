@@ -59,6 +59,21 @@
                             <a href="{% url 'vendor_manage_product' %}" class="{% if request.path == '/vendor/manage_product' or request.path|slice:':19' == '/vendor/edit_product' %}active{% endif %}">Manage Product</a>
                         </div>
                     </li>
+                    <li class="menu-item has-submenu {% if request.path == '/vendor/manage_order'%}active{% endif %}">
+                        <a class="menu-link">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Order</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="{% url 'manage_order' %}"
+                                class="{% if request.path == '/vendor/manage_order' %}active{% endif %}">Manage Order</a>
+                            <!-- <a href="{% url 'add_manual_vendor_page' %}"
+                                                    class="{% if request.path == '/admin/add_manual_vendor_page' %}active{% endif %}">Add Manual Vendor</a>
+                                                <a href="{% url 'manage_vendor' %}"
+                                                    class="{% if request.path == '/admin/manage_vendor' or request.path|slice:':18' == '/admin/edit_vendor' %}active{% endif %}">Manage
+                                                    Vendor</a> -->
+                        </div>
+                    </li>
                     <li class="menu-item {% if request.path == '/vendor/vendor_profile_page' %}active{% endif %}">
                         <a class="menu-link" href="{% url 'vendor_profile_page' %}">
                             <i class="icon material-icons md-stars"></i> 
@@ -115,10 +130,10 @@
                             <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{% static 'Vendor/assets/imgs/people/avatar-2.png' %}" alt="User" /></a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                                 <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                                {% comment %} <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a> {% endcomment %}
                                 <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
                                 <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                                {% comment %} <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a> {% endcomment %}
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{% url 'vendor_logout' %}"><i class="material-icons md-exit_to_app"></i>Logout</a>
                             </div>

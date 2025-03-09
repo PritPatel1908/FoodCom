@@ -9,13 +9,13 @@
                     <div class="home-slide-cover mt-30">
                         <div class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
                             <div class="single-hero-slider single-animation-wrap"
-                                style="background-image: url(static/User/assets/imgs/slider/slider-1.png)">
+                                style="background-image: url(static/User/assets/imgs/slider/b1.jpg)">
                                 <div class="slider-content">
                                     <h1 class="display-2 mb-40">
                                         Don’t miss amazing<br />
-                                        grocery deals
+                                        Food deals
                                     </h1>
-                                    <p class="mb-65">Sign up for the daily newsletter</p>
+                                    {% comment %} <p class="mb-65">Sign up for the daily newsletter</p> {% endcomment %}
                                     <form class="form-subcriber d-flex">
                                         <input type="email" placeholder="Your emaill address" />
                                         <button class="btn" type="submit">Subscribe</button>
@@ -23,13 +23,13 @@
                                 </div>
                             </div>
                             <div class="single-hero-slider single-animation-wrap"
-                                style="background-image: url(static/User/assets/imgs/slider/slider-2.png)">
+                                style="background-image: url(static/User/assets/imgs/slider/b2.jpg)">
                                 <div class="slider-content">
-                                    <h1 class="display-2 mb-40">
-                                        Fresh Vegetables<br />
+                                    <h1 class="display-2 mb-40 text-white">
+                                        Fresh Food & <br />
                                         Big discount
                                     </h1>
-                                    <p class="mb-65">Save up to 50% off on your first order</p>
+                                    {% comment %} <p class="mb-65">Save up to 50% off on your first order</p> {% endcomment %}
                                     <form class="form-subcriber d-flex">
                                         <input type="email" placeholder="Your emaill address" />
                                         <button class="btn" type="submit">Subscribe</button>
@@ -44,7 +44,7 @@
                 <section class="product-tabs section-padding position-relative">
                     <div class="section-title style-2">
                         <h3>Popular Products</h3>
-                        <ul class="nav nav-tabs links" id="myTab" role="tablist">
+                        <!-- <ul class="nav nav-tabs links" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab"
                                     data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one"
@@ -80,7 +80,7 @@
                                     data-bs-target="#tab-seven" type="button" role="tab" aria-controls="tab-seven"
                                     aria-selected="false">Fruits</button>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <!--End nav-tabs-->
                     <div class="tab-content" id="myTabContent">
@@ -100,8 +100,8 @@
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
-                                                <a aria-label="Add To Wishlist" class="action-btn"
-                                                    href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                {% comment %} <a aria-label="Add To Wishlist" class="action-btn"
+                                                    href="shop-wishlist.html"><i class="fi-rs-heart"></i></a> {% endcomment %}
                                                 {% comment %} <a aria-label="Compare" class="action-btn"
                                                     href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> {%
                                                 endcomment %}
@@ -3440,7 +3440,7 @@
                     <!--End tab-content-->
                 </section>
                 <!--Products Tabs-->
-                <section class="section-padding pb-5">
+                <!-- <section class="section-padding pb-5">
                     <div class="section-title">
                         <h3 class="">Deals Of The Day</h3>
                         <a class="show-all" href="shop-grid-right.html">
@@ -3609,9 +3609,9 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> -->
                 <!--End Deals-->
-                <section class="banners mt-20">
+                {% comment %} <section class="banners mt-20">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
                             <div class="banner-img">
@@ -3650,29 +3650,33 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> {% endcomment %}
                 <!--End banners-->
             </div>
             <div class="col-lg-1-5 primary-sidebar sticky-sidebar pt-30">
                 <div class="sidebar-widget widget-category-2 mb-30 border-dark">
                     <h5 class="section-title style-1 mb-30">Categories <span class="icon"></span></h5>
                     <ul>
-                        <li>
-                            <a href="{% url 'categories' %}">View All Category</a><span
-                                class="count">{{categories.count}}</span>
-                        </li>
+                        {% if categories.count > 0 %}
+                            <li>
+                                <a href="{% url 'categories' %}">View All Category</a><span
+                                    class="count">{{categories.count}}</span>
+                            </li>
 
-                        {% for category in categories|slice:'5' %}
-                        <li>
-                            <a href="shop-grid-right.html"> <img src="{{category.category_img}}"
-                                    alt="Category Img" />{{category.category_name}}</a><span
-                                class="count">{{category.sub_categories.count}}</span>
-                        </li>
-                        {% endfor %}
+                            {% for category in categories|slice:'5' %}
+                            <li>
+                                <a href="{% url 'category_subcategories' category.category_id %}"> <img src="{{category.category_img}}"
+                                        alt="Category Img" />{{category.category_name}}</a><span
+                                    class="count">{{category.sub_categories.count}}</span>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <span class="et">Not have any categories</span>
+                        {% endif %}
                     </ul>
                 </div>
                 <!-- Fillter By Price -->
-                <div class="sidebar-widget price_range range mb-30 border-dark">
+                <!-- <div class="sidebar-widget price_range range mb-30 border-dark">
                     <h5 class="section-title style-1 mb-30">Fill by price</h5>
                     <div class="price-filter">
                         <div class="price-filter-inner">
@@ -3720,48 +3724,28 @@
                     </div>
                     <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i>
                         Fillter</a>
-                </div>
+                </div> -->
                 <!-- Product sidebar Widget -->
-                <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10 border-dark">
-                    <h5 class="section-title style-1 mb-30">New products</h5>
-                    <div class="single-post clearfix border-dark">
-                        <div class="image">
-                            <img src="{% static 'User/assets/imgs/shop/thumbnail-3.jpg' %}" alt="#" />
-                        </div>
-                        <div class="content pt-10">
-                            <h5><a href="shop-product-detail.html">Chen Cardigan</a></h5>
-                            <p class="price mb-0 mt-5">$99.50</p>
-                            <div class="product-rate">
-                                <div class="product-rating" style="width: 90%"></div>
+                {% if new_products.count > 0 %}
+                    <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10 border-dark">
+                        <h5 class="section-title style-1 mb-30">New products</h5>
+                        {% for new_product in new_products %}
+                            <div class="single-post clearfix border-dark">
+                                <div class="image">
+                                    <img src="{{ new_product.product_img }}" alt="#" />
+                                </div>
+                                <div class="content pt-10">
+                                    <h5><a href="{% url 'product_detail' new_product.product_id %}">{{ new_product.product_name }}</a></h5>
+                                    <p class="price mb-0 mt-5">{{ new_product.product_price }}</p>
+                                    <div class="product-rate">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% comment %} <div class="single-post clearfix">
-                        <div class="image">
-                            <img src="{% static 'User/assets/imgs/shop/thumbnail-4.jpg' %}" alt="#" />
-                        </div>
-                        <div class="content pt-10">
-                            <h6><a href="shop-product-detail.html">Chen Sweater</a></h6>
-                            <p class="price mb-0 mt-5">$89.50</p>
-                            <div class="product-rate">
-                                <div class="product-rating" style="width: 80%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="single-post clearfix">
-                        <div class="image">
-                            <img src="{% static 'User/assets/imgs/shop/thumbnail-5.jpg' %}" alt="#" />
-                        </div>
-                        <div class="content pt-10">
-                            <h6><a href="shop-product-detail.html">Colorful Jacket</a></h6>
-                            <p class="price mb-0 mt-5">$25</p>
-                            <div class="product-rate">
-                                <div class="product-rating" style="width: 60%"></div>
-                            </div>
-                        </div>
-                    </div> {% endcomment %}
-                </div>
-                <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
+                {% endif %}
+                {% comment %} <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
                     <img src="{% static 'User/assets/imgs/banner/banner-11.png' %}" alt="" />
                     <div class="banner-text">
                         <span>Oganic</span>
@@ -3770,269 +3754,108 @@
                             on <span class="text-brand">Oganic</span><br />
                             Juice
                         </h4>
-                    </div>
-                </div>
+                    </div> 
+                </div> {% endcomment %}
             </div>
         </div>
-    </div>
-    <section class="popular-categories section-padding">
-        <div class="container">
-            <div class="section-title">
-                <div class="title">
-                    <h3>Shop by Categories</h3>
-                    <a class="show-all" href="shop-grid-right.html">
-                        All Categories
-                        <i class="fi-rs-angle-right"></i>
-                    </a>
+    </div>                        
+    {% if categories.count > 0 %}
+        <section class="popular-categories section-padding">
+            <div class="container">
+                <div class="section-title">
+                    <div class="title">
+                        <h3>Shop by Categories</h3>
+                        <a class="show-all" href="{% url 'categories' %}">
+                            All Categories
+                            <i class="fi-rs-angle-right"></i>
+                        </a>
+                    </div>
+                    <div class="slider-arrow slider-arrow-2 flex-right carausel-8-columns-arrow"
+                        id="carausel-8-columns-arrows"></div>
                 </div>
-                <div class="slider-arrow slider-arrow-2 flex-right carausel-8-columns-arrow"
-                    id="carausel-8-columns-arrows"></div>
-            </div>
-            <div class="carausel-8-columns-cover position-relative">
-                <div class="carausel-8-columns" id="carausel-8-columns">
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-1.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Milks and <br />Dairies</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-2.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Wines & <br />
-                                Alcohol</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-3.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Clothing & <br />Beauty</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-4.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Pet Foods <br />& Toy</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-5.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Packaged <br />fast food</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-6.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Baking <br />material</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-7.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Vegetables <br />& tubers</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-8.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Fresh <br />Seafood</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-9.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6>
-                            <a href="shop-grid-right.html">Noodles <br />Rice</a>
-                        </h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-10.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Fastfood</a></h6>
-                    </div>
-                    <div class="card-1">
-                        <figure class="img-hover-scale overflow-hidden">
-                            <a href="shop-grid-right.html"><img
-                                    src="{% static 'User/assets/imgs/theme/icons/category-11.svg' %}" alt="" /></a>
-                        </figure>
-                        <h6><a href="shop-grid-right.html">Ice cream</a></h6>
+                <div class="carausel-8-columns-cover position-relative">
+                    <div class="carausel-8-columns" id="carausel-8-columns">
+                        {% for category in categories|slice:'5' %}
+                            <div class="card-1">
+                                <figure class="img-hover-scale overflow-hidden">
+                                    <a href="{% url 'category_subcategories' category.category_id %}"><img
+                                            src="{{category.category_img}}" alt="" /></a>
+                                </figure>
+                                <h6>
+                                    <a href="{% url 'category_subcategories' category.category_id %}">{{ category.category_name }}</a>
+                                </h6>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endif %}
     <!--End category slider-->
     <section class="section-padding mb-30">
         <div class="container">
             <div class="row">
-                <div class="col-xl-3 col-lg-4 col-md-6 mb-sm-5 mb-md-0">
-                    <h4 class="section-title style-1 mb-30 animated animated">Top Selling</h4>
-                    <div class="product-list-small animated animated">
-                        <article class="row align-items-center hover-up">
-                            <figure class="col-md-4 mb-0">
-                                <a href="shop-product-right.html"><img
-                                        src="{% static 'User/assets/imgs/shop/thumbnail-1.jpg' %}" alt="" /></a>
-                            </figure>
-                            <div class="col-md-8 mb-0">
-                                <h6>
-                                    <a href="shop-product-right.html">Nestle Original Coffee-Mate Coffee Creamer</a>
-                                </h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
+                {% if top_selling_products %}
+                    <div class="col-xl-6 col-lg-6 col-md-6 mb-sm-6 mb-md-0">
+                        <h4 class="section-title style-1 mb-30 animated animated">Top Selling</h4>
+                        <div class="product-list-small animated animated">
+                            {% for top_selling_product in top_selling_products|slice:3 %}
+                                <article class="row align-items-center hover-up">
+                                    <figure class="col-md-4 mb-0">
+                                        <a href="{% url 'product_detail' top_selling_product.product_id %}"><img
+                                                src="{{ top_selling_product.product_img }}" alt="" /></a>
+                                    </figure>
+                                    <div class="col-md-8 mb-0">
+                                        <h6>
+                                            <a href="{% url 'product_detail' top_selling_product.product_id %}">{{ top_selling_product.product_name }}</a>
+                                        </h6>
+                                        <div class="product-rate-cover">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: 90%"></div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                        </div>
+                                        <div class="product-price">
+                                            <span>{{ top_selling_product.product_price }}</span>
+                                            <span class="old-price">₹ {{ top_selling_product.product_old_price }}</span>
+                                        </div>
                                     </div>
-                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span>$32.85</span>
-                                    <span class="old-price">$33.8</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="row align-items-center hover-up">
-                            <figure class="col-md-4 mb-0">
-                                <a href="shop-product-right.html"><img
-                                        src="{% static 'User/assets/imgs/shop/thumbnail-2.jpg' %}" alt="" /></a>
-                            </figure>
-                            <div class="col-md-8 mb-0">
-                                <h6>
-                                    <a href="shop-product-right.html">Nestle Original Coffee-Mate Coffee Creamer</a>
-                                </h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
-                                    </div>
-                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span>$32.85</span>
-                                    <span class="old-price">$33.8</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="row align-items-center hover-up">
-                            <figure class="col-md-4 mb-0">
-                                <a href="shop-product-right.html"><img
-                                        src="{% static 'User/assets/imgs/shop/thumbnail-3.jpg' %}" alt="" /></a>
-                            </figure>
-                            <div class="col-md-8 mb-0">
-                                <h6>
-                                    <a href="shop-product-right.html">Nestle Original Coffee-Mate Coffee Creamer</a>
-                                </h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
-                                    </div>
-                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span>$32.85</span>
-                                    <span class="old-price">$33.8</span>
-                                </div>
-                            </div>
-                        </article>
+                                </article>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 mb-md-0">
-                    <h4 class="section-title style-1 mb-30 animated animated">Trending Products</h4>
-                    <div class="product-list-small animated animated">
-                        <article class="row align-items-center hover-up">
-                            <figure class="col-md-4 mb-0">
-                                <a href="shop-product-right.html"><img
-                                        src="{% static 'User/assets/imgs/shop/thumbnail-4.jpg' %}" alt="" /></a>
-                            </figure>
-                            <div class="col-md-8 mb-0">
-                                <h6>
-                                    <a href="shop-product-right.html">Organic Cage-Free Grade A Large Brown Eggs</a>
-                                </h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
+                {% endif %}
+                {% if trending_products %}
+                    <div class="col-xl-6 col-lg-6 col-md-6 mb-md-0">
+                        <h4 class="section-title style-1 mb-30 animated animated">Trending Products</h4>
+                        <div class="product-list-small animated animated">
+                            {% for trending_productt in trending_products|slice:3 %}
+                                <article class="row align-items-center hover-up">
+                                    <figure class="col-md-4 mb-0">
+                                        <a href="{% url 'product_detail' trending_productt.product_id %}"><img
+                                                src="{{ trending_productt.product_img }}" alt="" /></a>
+                                    </figure>
+                                    <div class="col-md-8 mb-0">
+                                        <h6>
+                                            <a href="{% url 'product_detail' trending_productt.product_id %}">{{ trending_productt.product_name }}</a>
+                                        </h6>
+                                        <div class="product-rate-cover">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: 90%"></div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                        </div>
+                                        <div class="product-price">
+                                            <span>{{ trending_productt.product_price }}</span>
+                                            <span class="old-price">₹ {{ trending_productt.product_old_price }}</span>
+                                        </div>
                                     </div>
-                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span>$32.85</span>
-                                    <span class="old-price">$33.8</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="row align-items-center hover-up">
-                            <figure class="col-md-4 mb-0">
-                                <a href="shop-product-right.html"><img
-                                        src="{% static 'User/assets/imgs/shop/thumbnail-5.jpg' %}" alt="" /></a>
-                            </figure>
-                            <div class="col-md-8 mb-0">
-                                <h6>
-                                    <a href="shop-product-right.html">Seeds of Change Organic Quinoa, Brown, & Red
-                                        Rice</a>
-                                </h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
-                                    </div>
-                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span>$32.85</span>
-                                    <span class="old-price">$33.8</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="row align-items-center hover-up">
-                            <figure class="col-md-4 mb-0">
-                                <a href="shop-product-right.html"><img
-                                        src="{% static 'User/assets/imgs/shop/thumbnail-6.jpg' %}" alt="" /></a>
-                            </figure>
-                            <div class="col-md-8 mb-0">
-                                <h6>
-                                    <a href="shop-product-right.html">Naturally Flavored Cinnamon Vanilla Light Roast
-                                        Coffee</a>
-                                </h6>
-                                <div class="product-rate-cover">
-                                    <div class="product-rate d-inline-block">
-                                        <div class="product-rating" style="width: 90%"></div>
-                                    </div>
-                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span>$32.85</span>
-                                    <span class="old-price">$33.8</span>
-                                </div>
-                            </div>
-                        </article>
+                                </article>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 mb-sm-5 mb-md-0 d-none d-lg-block">
+                {% endif %}
+                <!-- <div class="col-xl-3 col-lg-4 col-md-6 mb-sm-5 mb-md-0 d-none d-lg-block">
                     <h4 class="section-title style-1 mb-30 animated animated">Recently added</h4>
                     <div class="product-list-small animated animated">
                         <article class="row align-items-center hover-up">
@@ -4169,7 +3992,7 @@
                             </div>
                         </article>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>

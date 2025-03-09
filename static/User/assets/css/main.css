@@ -6101,7 +6101,7 @@ h6.post-title {
 
 .loop-grid article {
   position: relative;
-  background: #fff;
+  background: transparent;
   overflow: hidden;
 }
 
@@ -11878,7 +11878,7 @@ footer .hotline img {
   .hotline,
   li.hot-deals,
   .header-action-2 .header-action-icon-2 span.lable {
-    display: none !important;
+    /* display: none !important; */
   }
   .main-menu.main-menu-padding-1 > nav > ul > li {
     padding: 0 10px;

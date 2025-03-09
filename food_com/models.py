@@ -12,6 +12,13 @@ RATING = (
     (5, '⭐⭐⭐⭐⭐'),
 )
 
+# Status Choices
+STATUS_CHOICE = (
+    ('processing', 'Processing'),
+    ('shipped', 'Shipped'),
+    ('delivered', 'Delivered')
+)
+
 class Users(AbstractUser):
     User_Type = (
         (1,'Admin'),
@@ -123,3 +130,28 @@ class Address(models.Model):
     address = models.CharField(max_length=100, null=True)
     status = models.BooleanField(default=False)
     user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
+
+# class Cart(models.Model):
+#     cart_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet='abcdefgh12345', primary_key=True)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+#     user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
+#     product_quantity = models.IntegerField(null=True)
+#     system_id = models.CharField(max_length=100, null=True)
+
+class Order(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    paid_status = models.BooleanField(default=False)
+    order_date = models.DateTimeField(auto_now_add=True)
+    payment_status = models.CharField(max_length=30, default="cod")
+    product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default="processing")
+
+class OrderDetails(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_details')
+    invoice_no = models.CharField(max_length=20)
+    product_status = models.CharField(max_length=20)
+    item = models.CharField(max_length=20)
+    item_id = models.CharField(max_length=20, null=True)
+    qty = models.IntegerField(default=0)
+    price =  models.DecimalField(max_digits=10, decimal_places=2)
+    total =  models.DecimalField(max_digits=10, decimal_places=2)

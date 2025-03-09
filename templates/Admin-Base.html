@@ -60,7 +60,7 @@
                         </div>
                     </li>
 
-                    <li class="menu-item has-submenu {% if request.path == '/admin/manage_vendor_request_page' or request.path == '/admin/add_manual_vendor_page' %}active{% endif %}">
+                    <li class="menu-item has-submenu {% if request.path == '/admin/manage_vendor_request_page' or request.path == '/admin/add_manual_vendor_page' or request.path == '/admin/manage_vendor' or request.path|slice:':18' == '/admin/edit_vendor'%}active{% endif %}">
                         <a class="menu-link">
                             <i class="icon material-icons md-shopping_bag"></i>
                             <span class="text">Vendor</span>
@@ -68,7 +68,24 @@
                         <div class="submenu">
                             <a href="{% url 'manage_vendor_request_page' %}" class="{% if request.path == '/admin/manage_vendor_request_page' %}active{% endif %}">Manage Vendor Request</a>
                             <a href="{% url 'add_manual_vendor_page' %}" class="{% if request.path == '/admin/add_manual_vendor_page' %}active{% endif %}">Add Manual Vendor</a>
-                            <a href="" class="{% if request.path == '/admin/manage_vendor' or request.path|slice:':19' == '/admin/edit_vendor' %}active{% endif %}">Manage Vendor</a>
+                            <a href="{% url 'manage_vendor' %}" class="{% if request.path == '/admin/manage_vendor' or request.path|slice:':18' == '/admin/edit_vendor' %}active{% endif %}">Manage Vendor</a>
+                        </div>
+                    </li>
+
+                    <li
+                        class="menu-item has-submenu {% if request.path == '/admin/manage_order'%}active{% endif %}">
+                        <a class="menu-link">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Order</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="{% url 'manage_order' %}"
+                                class="{% if request.path == '/admin/manage_order' %}active{% endif %}">Manage Order</a>
+                            <!-- <a href="{% url 'add_manual_vendor_page' %}"
+                                class="{% if request.path == '/admin/add_manual_vendor_page' %}active{% endif %}">Add Manual Vendor</a>
+                            <a href="{% url 'manage_vendor' %}"
+                                class="{% if request.path == '/admin/manage_vendor' or request.path|slice:':18' == '/admin/edit_vendor' %}active{% endif %}">Manage
+                                Vendor</a> -->
                         </div>
                     </li>
                     <li class="menu-item has-submenu">
@@ -82,7 +99,7 @@
                             <a href="page-orders-detail.html">Order detail</a>
                         </div>
                     </li>
-                    <li class="menu-item has-submenu">
+                    {% comment %} <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-sellers-cards.html">
                             <i class="icon material-icons md-store"></i>
                             <span class="text">Sellers</span>
@@ -92,8 +109,8 @@
                             <a href="page-sellers-list.html">Sellers list</a>
                             <a href="page-seller-detail.html">Seller profile</a>
                         </div>
-                    </li>
-                    <li class="menu-item has-submenu">
+                    </li> {% endcomment %}
+                    {% comment %} <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-form-product-1.html">
                             <i class="icon material-icons md-add_box"></i>
                             <span class="text">Add product</span>
@@ -104,7 +121,7 @@
                             <a href="page-form-product-3.html">Add product 3</a>
                             <a href="page-form-product-4.html">Add product 4</a>
                         </div>
-                    </li>
+                    </li> {% endcomment %}
                     <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-transactions-1.html">
                             <i class="icon material-icons md-monetization_on"></i>
@@ -132,7 +149,7 @@
                             <span class="text">Reviews</span>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    {% comment %} <li class="menu-item">
                         <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> <span class="text">Brands</span> </a>
                     </li>
                     <li class="menu-item">
@@ -140,7 +157,7 @@
                             <i class="icon material-icons md-pie_chart"></i>
                             <span class="text">Statistics</span>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
                 </ul>
                 <hr />
                 <ul class="menu-aside">
@@ -154,12 +171,12 @@
                             <a href="page-settings-2.html">Setting sample 2</a>
                         </div>
                     </li>
-                    <li class="menu-item">
+                    {% comment %} <li class="menu-item">
                         <a class="menu-link" href="page-blank.html">
                             <i class="icon material-icons md-local_offer"></i>
                             <span class="text"> Starter page </span>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
                 </ul>
                 <br />
                 <br />
@@ -210,10 +227,10 @@
                             <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{% static 'Admin/assets/imgs/people/avatar-2.png' %}" alt="User" /></a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                                 <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                                {% comment %} <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
                                 <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
                                 <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a> {% endcomment %}
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="material-icons md-exit_to_app"></i>Logout</a>
                             </div>

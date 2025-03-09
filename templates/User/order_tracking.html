@@ -1,0 +1,85 @@
+{% extends 'User-Base.html' %}
+{% load static %}
+{% block content %}
+<main class="main pages">
+    <div class="container">
+        <div class="row justify-content-center mt-4 mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Order Tracking - Order #{{ order.id }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="track">
+                            <div
+                                class="step {% if order.product_status == 'processing' or order.product_status == 'shipped' or order.product_status == 'delivered' %}active{% endif %}">
+                                <span class="icon">🛠</span>
+                                <span class="text">Processing</span>
+                            </div>
+                            <div
+                                class="step {% if order.product_status == 'shipped' or order.product_status == 'delivered' %}active{% endif %}">
+                                <span class="icon">📦</span>
+                                <span class="text">Shipped</span>
+                            </div>
+                            <div class="step {% if order.product_status == 'delivered' %}active{% endif %}">
+                                <span class="icon">✅</span>
+                                <span class="text">Delivered</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .track {
+        display: flex;
+        justify-content: space-between;
+        margin: 50px 0;
+        padding: 20px;
+        position: relative;
+    }
+
+    .track::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        width: 80%;
+        height: 5px;
+        background: #ddd;
+        transform: translateY(-50%);
+        z-index: -1;
+    }
+
+    .step {
+        width: 33.33%;
+        text-align: center;
+        position: relative;
+    }
+
+    .step .icon {
+        display: inline-block;
+        background: #ddd;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 50%;
+        color: white;
+        font-size: 20px;
+    }
+
+    .step.active .icon {
+        background: #28a745;
+    }
+
+    .step .text {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
+{% endblock %}

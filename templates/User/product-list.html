@@ -13,15 +13,15 @@
         <div class="container mb-30 mt-30">
             <div class="row">
                 <div class="col-lg-12">
-                    <a class="shop-filter-toogle" href="#">
+                    {% comment %} <a class="shop-filter-toogle" href="#">
                         <span class="fi-rs-filter mr-5"></span>
                         Filters
                         <i class="fi-rs-angle-small-down angle-down"></i>
                         <i class="fi-rs-angle-small-up angle-up"></i>
-                    </a>
+                    </a> {% endcomment %}
                     <div class="shop-product-fillter-header">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
+                            {% comment %} <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
                                 <div class="card">
                                     <h5 class="mb-30">By Categories</h5>
                                     <div class="categories-dropdown-wrap font-heading" style="max-height: 300px; overflow-y: auto;">
@@ -36,8 +36,8 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
                                 <div class="card">
                                     <h5 class="mb-30">By Vendors</h5>
                                     <div class="d-flex">
@@ -50,8 +50,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
                                 <div class="card">
                                     <h5 class="mb-30">By Tags</h5>
                                     <div class="sidebar-widget widget-tags">
@@ -80,14 +80,14 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-5 mb-sm-5">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-5 mb-sm-5">
                                 <div class="card">
                                     <h5 class="mb-10">By Price</h5>
                                     <div class="sidebar-widget price_range range">
                                         <div class="price-filter mb-20">
                                             <div class="price-filter-inner">
-                                                {% comment %} <div id="slider-range" class="mb-20"></div> {% endcomment %}
+                                                {% comment %} <div id="slider-range" class="mb-20"></div> 
                                                 <input type="range" class="slider-range" name="range" id="range" value="{{min_max_price.product_price__min}}" min="{{min_max_price.product_price__min}}" max="{{min_max_price.product_price__max}}" oninput="max_price.value=this.value">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="caption">From: <strong id="slider-range-value1" class="text-brand">{{min_max_price.product_price__min|floatformat:2}}</strong></div>
@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -163,9 +163,9 @@
                                             </a>
                                         </div>
                                         <div class="product-action-1">
-                                            <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                            {% comment %} <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> {% endcomment %}
-                                            <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                            {% comment %} <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                            {% comment %} <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> 
+                                            <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a> {% endcomment %}
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
                                             <span class="hot">Save {{product.get_save|floatformat:0}} ₹</span>
@@ -231,7 +231,7 @@
                             </ul>
                         </nav>
                     </div>
-                    <section class="section-padding pb-5">
+                    {% comment %} <section class="section-padding pb-5">
                         <div class="section-title">
                             <h3 class="">Deals Of The Day</h3>
                             <a class="show-all" href="shop-grid-right.html">
@@ -389,7 +389,7 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </section> {% endcomment %}
                     <!--End Deals-->
                 </div>
             </div>

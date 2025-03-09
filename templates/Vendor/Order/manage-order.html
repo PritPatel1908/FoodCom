@@ -1,0 +1,212 @@
+{% extends 'Vendor-Base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List</h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div>
+            <input type="text" placeholder="Search order ID" class="form-control bg-white" />
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control" />
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Date</th>
+                            <th scope="col" class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{order.id}}</td>
+                            <td><b>{{order.user}}</b></td>
+                            <td>{{order.user.email}}</td>
+                            <td>₹{{order.price}}</td>
+                            <td><span class="badge rounded-pill {% if order.product_status == 'processing' %} alert-warning {% elif order.product_status == 'shipped'%} alert-info {% else %} alert-success {% endif %}">{{order.product_status}}</span></td>
+                            <td>{{order.order_date}}</td>
+                            <td class="text-end">
+                                <!-- <a href="#" class="btn btn-md rounded font-sm">Detail</a> -->
+                                <button type="button" class="btn btn-primary order-detail-btn" data-order-id="{{ order.id }}">
+                                    Detail
+                                </button>
+                                <!-- <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm">
+                                        <i class="material-icons md-more_horiz"></i> </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View detail</a>
+                                        <a class="dropdown-item" href="#">Edit info</a>
+                                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                                    </div>
+                                </div> -->
+                                <!-- dropdown //end -->
+                            </td>
+                            <td>
+                                <select class="form-select order-status-update" data-order-id="{{ order.id }}">
+                                    <option value="processing" {% if order.product_status == 'processing' %}selected{% endif %}>Processing</option>
+                                    <option value="shipped" {% if order.product_status == 'shipped' %}selected{% endif %}>Shipped</option>
+                                    <option value="delivered" {% if order.product_status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- table-responsive //end -->
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Order ID:</strong> <span id="modalOrderId"></span></p>
+                <p><strong>User:</strong> <span id="modalUser"></span></p>
+                <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                <p><strong>Total Price:</strong> ₹<span id="modalPrice"></span></p>
+                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                <p><strong>Order Date:</strong> <span id="modalDate"></span></p>
+
+                <h5>Order Items:</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Invoice No</th>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderDetailsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script>
+    $(document).ready(function () {
+        $(".order-detail-btn").click(function () {
+            let orderId = $(this).data("order-id");
+
+            $.ajax({
+                url: `/order-details/${orderId}/`,
+                method: "GET",
+                success: function (data) {
+                    $("#modalOrderId").text(data.order_id);
+                    $("#modalUser").text(data.user);
+                    $("#modalEmail").text(data.email);
+                    $("#modalPrice").text(data.price);
+                    $("#modalStatus").text(data.status);
+                    $("#modalDate").text(data.date);
+
+                    let detailsTable = $("#orderDetailsTableBody");
+                    detailsTable.empty(); // Clear previous data
+
+                    data.details.forEach(detail => {
+                        let row = `<tr>
+                        <td>${detail.invoice_no}</td>
+                        <td>${detail.item}</td>
+                        <td>${detail.qty}</td>
+                        <td>₹${detail.price}</td>
+                        <td>₹${detail.total}</td>
+                        <td>${detail.product_status}</td>
+                    </tr>`;
+                        detailsTable.append(row);
+                    });
+
+                    // Manually open the modal
+                    var modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                    modal.show();
+                },
+                error: function (error) {
+                    console.error("Error fetching order details:", error);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".order-status-update").change(function () {
+            let orderId = $(this).data("order-id");
+            let newStatus = $(this).val();
+
+            $.ajax({
+                url: `/update-order-status/${orderId}/`,
+                method: "POST",
+                data: {
+                    order_status: newStatus,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function (response) {
+                    alert("Order status updated successfully!");
+                },
+                error: function (error) {
+                    console.error("Error updating status:", error);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

@@ -405,3 +405,42 @@ def update_vendor_profile(request):
         }
         return JsonResponse({'status': 200, 'message': 'Your vendor profile is changed...'})
     return render(request, 'Vendor/Profile/vendor-account-profile.html', context)
+
+# Order
+# Manage order
+def manage_order(request):
+    orders = Order.objects.all().order_by('order_date') #this is show ascending order
+    context = {
+        'orders' : orders
+    }
+    return render(request, 'Vendor/Order/manage-order.html', context)
+
+def get_order_details(request, order_id):
+    order = Order.objects.get(id=order_id)
+    order_details = OrderDetails.objects.filter(order=order).values(
+        "invoice_no", "product_status", "item", "item_id", "qty", "price", "total"
+    )
+
+    data = {
+        "order_id": order.id,
+        "user": order.user.username,
+        "email": order.user.email,
+        "price": order.price,
+        "status": order.product_status,
+        "date": order.order_date,
+        "details": list(order_details),
+    }
+
+    return JsonResponse(data)
+
+def update_order_status(request, order_id):
+    if request.method == "POST":
+        try:
+            order = Order.objects.get(id=order_id)
+            new_status = request.POST.get("order_status")
+            order.product_status = new_status
+            order.save()
+            return JsonResponse({"message": "Order status updated successfully!"}, status=200)
+        except Order.DoesNotExist:
+            return JsonResponse({"error": "Order not found"}, status=404)
+    return JsonResponse({"error": "Invalid request"}, status=400)
